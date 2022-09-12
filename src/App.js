@@ -5,12 +5,13 @@ import { useEffect } from 'react'; // For keyboard use
 // const { useState, useEffect } = React;
 
 function App() {
-    const [calc, setCalc] = useState('');
-    const [result, setResult] = useState('');
     const [num, setNum] = useState('');
+    const [calc, setCalc] = useState('');
+    const [runTally, setRunTally] = useState('');
     // const [key, setKey] = useState('');
 
     const ops = ['/', '*', '+', '-'];
+    // Nums array needed for keyboard use
     const nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 
     function evaluate(string) {
@@ -33,7 +34,7 @@ function App() {
         } else {
             setNum(num + dec);
             setCalc(calc + dec);
-            setResult(evaluate(calc + dec).toString());
+            setRunTally(evaluate(calc + dec).toString());
         }
     };
 
@@ -44,7 +45,7 @@ function App() {
         }
         setNum(num + value);
         setCalc(calc + value);
-        setResult(evaluate(calc + value).toString());
+        setRunTally(evaluate(calc + value).toString());
     };
 
     const updateOper = (op) => {
@@ -55,14 +56,15 @@ function App() {
         ) {
             // Or already have one minus operator
             return; // Do nothing
-
-        // Trying
-        } else if (ops.includes(calc.slice(-1)) && ops.includes(calc.slice(-2, -1))) {
+        } else if (
+            ops.includes(calc.slice(-1)) &&
+            ops.includes(calc.slice(-2, -1))
+        ) {
             // Used two operators, so replace
             return setCalc(calc.slice(0, -2) + op);
 
         } else if (ops.includes(calc.slice(-1)) && op !== '-') {
-            // Just used another operator, so replace
+            // Just used another operator other than minus, so replace
             return setCalc(calc.slice(0, -1) + op);
         }
 
@@ -74,11 +76,13 @@ function App() {
         if (calc === '') {
             return;
         } else if (ops.includes(calc.slice(-1))) {
-            setCalc(calc.slice(0, -1));
+            // Ended with an operator
+            setCalc(runTally);
         } else if (
             !num.includes('.') ||
             !calc.includes('.') ||
-            result.includes('e+') ||
+            !runTally.includes('.') ||
+            runTally.includes('e+') ||
             calc.includes('e+')
         ) {
             // No decimal rounding of numbers without decimals
@@ -87,25 +91,30 @@ function App() {
             // Only round numbers with decimals (bc rounding with 16 or more digits before decimal returns NaN)
             setCalc(round(evaluate(calc)).toString());
         }
-        setNum(calc);
-        setResult('');
+        setNum(runTally);
+        // setRunTally('');
     };
 
     const allClear = () => {
         if (calc === '') {
             return;
         }
-        setCalc(''); // Clears all
-        setResult('');
         setNum('');
+        setCalc(''); // Clears all
+        setRunTally('');
     };
+
+    // const allClearHandler = () {
+
+    // }
 
     const clearEntry = () => {
         if (calc === '') {
             return;
         }
+        setNum(num.slice(0, -1)); // CE, return all but the last
         setCalc(calc.slice(0, -1)); // CE, return all but the last
-        setResult(calc.slice(0, -1));
+        setRunTally(evaluate(calc.slice(0, -1)).toString());
     };
 
     // For using the keyboard
@@ -130,16 +139,20 @@ function App() {
         return;
     };
 
+    console.log('num', num, typeof num);
+    console.log('calc', calc, typeof calc);
+    console.log('runTally', runTally, typeof runTally);
+
     return (
         <div className="App">
             <div className="ts">
-                num = {num}; calc = {calc}; result = {result};
+                num = {num}; calc = {calc}; runTally = {runTally};
             </div>
             {/* <div className="ts">onKeyDown event = '{key}'</div> */}
             <div className="calculator">
                 <div className="display">
                     <div className="preview">
-                        {result ? `(${result})` : '( )'}
+                        {runTally ? `(${runTally})` : '( )'}
                     </div>
                     <div id="display">{calc || '0'}</div>
                 </div>
@@ -148,7 +161,7 @@ function App() {
                     <button
                         className="button topRow opButton clearAll"
                         id="clear"
-                        onClick={allClear}>
+                        onClick={() => allClear()}>
                         AC
                     </button>
                     <button
@@ -251,7 +264,7 @@ function App() {
                     <button
                         className="button equalButton"
                         id="equals"
-                        onClick={equals}>
+                        onClick={() => equals()}>
                         =
                     </button>
                 </div>
@@ -263,6 +276,9 @@ function App() {
 // Comment out for codepen.io
 export default App;
 
-// For Codepen.io
+// For Codepen.io, using React 17
+// ReactDOM.render(<App />, document.getElementById("app"))
+
+// For Codepen.io, using React 18 (fCC test suite wouldn't work completely)
 // const root = ReactDOM.createRoot(document.getElementById("app"));
 // root.render(<App />);

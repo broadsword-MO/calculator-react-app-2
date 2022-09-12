@@ -63,7 +63,6 @@ body {
     font-size: 2.5rem;
     color: var(--text);
     overflow-wrap: break-word; /* Keeps all the numbers visible */
-
 }
 
 .keyPad {
@@ -180,7 +179,7 @@ body {
     .topRow {
         height: 8rem;
     }
-    
+
     .opButton {
         font-size: 3rem;
         padding: 0.3em;
