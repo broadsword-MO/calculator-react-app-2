@@ -138,26 +138,30 @@ body {
     font-weight: 900;
     padding: 0.3em;
     background-color: var(--ops);
-    box-shadow: 2px 2px 1px 1px #824700, 1px 1px 2px 1px inset #ffc278;
+    box-shadow: 2px 2px 1px 1px rgb(130, 71, 0),
+        1px 1px 2px 1px inset rgb(255, 194, 120);
 }
 
 .clearAll {
     grid-area: AC;
     background-color: var(--ACButton);
-    box-shadow: 2px 2px 1px 1px #580000, 1px 1px 2px 1px inset #ff0000;
+    box-shadow: 2px 2px 1px 1px rgb(88, 0, 0),
+        1px 1px 2px 1px inset rgb(255, 0, 0);
 }
 
 .numButton {
     outline: 1px solid red;
     background-color: var(--numbers);
-    box-shadow: 2px 2px 1px 1px #000083, 1px 1px 2px 1px inset #3434ff;
+    box-shadow: 2px 2px 1px 1px rgb(0, 0, 131),
+        1px 1px 2px 1px inset rgb(52, 52, 255);
 }
 
 .equalButton {
     grid-area: equal;
     font-weight: 900;
     background-color: var(--equalsButton);
-    box-shadow: 2px 2px 1px 1px #580000, 1px 1px 2px 1px inset #ff0000;
+    box-shadow: 2px 2px 1px 1px rgb(30, 45, 30),
+        1px 1px 2px 1px inset rgb(30, 135, 30);
 }
 
 /* Button press animation */
