@@ -62,7 +62,6 @@ function App() {
         ) {
             // Used two operators, so replace
             return setCalc(calc.slice(0, -2) + op);
-
         } else if (ops.includes(calc.slice(-1)) && op !== '-') {
             // Just used another operator other than minus, so replace
             return setCalc(calc.slice(0, -1) + op);
@@ -79,17 +78,22 @@ function App() {
             // Ended with an operator
             setCalc(runTally);
         } else if (
-            !num.includes('.') ||
-            !calc.includes('.') ||
-            !runTally.includes('.') ||
-            runTally.includes('e+') ||
-            calc.includes('e+')
+            calc.includes('e') ||
+            runTally.includes('e') ||
+            num.split('.')[0].length > 15 ||
+            runTally.split('.')[0].length > 15
         ) {
-            // No decimal rounding of numbers without decimals
-            setCalc(evaluate(calc).toString());
-        } else {
-            // Only round numbers with decimals (bc rounding with 16 or more digits before decimal returns NaN)
+            // No further evaluating of exponential numbers, or num or runTally with >15 digits before decimal (also bc rounding numbers with 16 or more digits before a decimal will return NaN, a JavaScript limitation))
+            setCalc(runTally);
+        } else if (
+            num.includes('.') ||
+            calc.includes('.') ||
+            runTally.includes('.')
+        ) {
+            // Only round numbers with decimals
             setCalc(round(evaluate(calc)).toString());
+        } else {
+            setCalc(evaluate(calc).toString());
         }
         setNum(runTally);
         // setRunTally('');
@@ -145,9 +149,9 @@ function App() {
 
     return (
         <div className="App">
-            <div className="ts">
+            {/* <div className="ts">
                 num = {num}; calc = {calc}; runTally = {runTally};
-            </div>
+            </div> */}
             {/* <div className="ts">onKeyDown event = '{key}'</div> */}
             <div className="calculator">
                 <div className="display">
